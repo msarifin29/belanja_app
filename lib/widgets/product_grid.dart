@@ -22,9 +22,9 @@ class ProductGrid extends StatelessWidget {
             mainAxisExtent: 150),
         padding: const EdgeInsets.all(10),
         itemCount: product.length,
-        itemBuilder: (ctx, i) => ProductItem(
-            id: product[i].id,
-            title: product[i].title,
-            imageUrl: product[i].imageUrl));
+        itemBuilder: (ctx, i) => ChangeNotifierProvider(
+              create: (context) => product[i],
+              child: ProductItem(),
+            ));
   }
 }
