@@ -1,4 +1,6 @@
+import 'package:belanja_app/provider/cart.dart';
 import 'package:belanja_app/provider/products.dart';
+import 'package:belanja_app/screen/cart_screen.dart';
 import 'package:belanja_app/screen/product_detail_screen.dart';
 import 'package:belanja_app/screen/product_overview_screen.dart';
 import 'package:flutter/material.dart';
@@ -13,15 +15,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => Products(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider.value(value: Products()),
+        ChangeNotifierProvider.value(
+          value: Cart(),
+        )
+      ],
       child: MaterialApp(
         theme: ThemeData(
             colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                 .copyWith(secondary: Colors.deepOrange),
             fontFamily: 'Lato'),
         routes: <String, WidgetBuilder>{
-          '/product-detail': (context) => ProductDetailScreen()
+          '/product-detail': (context) => ProductDetailScreen(),
+          '/cart': (context) => CartScreen()
         },
         home: ProductsOverviewScreen(),
       ),

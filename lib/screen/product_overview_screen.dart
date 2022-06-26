@@ -1,6 +1,10 @@
+import 'package:belanja_app/provider/cart.dart';
+import 'package:belanja_app/widgets/badge.dart';
 import 'package:belanja_app/widgets/product_grid.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+// ignore: constant_identifier_names
 enum FilterOptions { MyFavorite, All }
 
 class ProductsOverviewScreen extends StatefulWidget {
@@ -20,6 +24,15 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             'Belanja',
           ),
           actions: [
+            Consumer<Cart>(
+                builder: (_, cart, ch) => Badge(
+                      child: IconButton(
+                          onPressed: () {
+                            Navigator.of(context).pushNamed('/cart');
+                          },
+                          icon: const Icon(Icons.shopping_cart_outlined)),
+                      value: cart.itemCount.toString(),
+                    )),
             PopupMenuButton(
                 onSelected: (FilterOptions selectedValue) {
                   setState(() {
@@ -31,11 +44,11 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                   });
                 },
                 itemBuilder: (_) => [
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text('MyFavorite'),
                         value: FilterOptions.MyFavorite,
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
                         child: Text('All'),
                         value: FilterOptions.All,
                       )
