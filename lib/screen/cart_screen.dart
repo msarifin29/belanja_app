@@ -1,4 +1,5 @@
-import 'package:belanja_app/provider/cart.dart';
+import 'package:belanja_app/provider/cart.dart' show Cart;
+import 'package:belanja_app/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -12,7 +13,7 @@ class CartScreen extends StatelessWidget {
     final cart = Provider.of<Cart>(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Your Cart'),
+        title: const Text('Your Cart'),
       ),
       body: Column(
         children: [
@@ -27,18 +28,30 @@ class CartScreen extends StatelessWidget {
                       'Total',
                       style: TextStyle(fontSize: 20),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 20,
                     ),
                     Chip(
-                      label: Text('\$${cart.totalAmount}'),
-                      labelStyle:
-                          TextStyle(color: Theme.of(context).primaryColor),
+                      label: Text('\$${cart.totalAmount.toStringAsFixed(2)}'),
+                      labelStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary),
                     ),
-                    TextButton(onPressed: () {}, child: Text('Order Now'))
+                    TextButton(onPressed: () {}, child: const Text('Order Now'))
                   ]),
             ),
-          )
+          ),
+          const SizedBox(
+            height: 10,
+          ),
+          Expanded(
+              child: ListView.builder(
+                  itemCount: cart.items.length,
+                  itemBuilder: (ctx, i) => CartItem(
+                      productId: cart.items.keys.toList()[i],
+                      id: cart.items.values.toList()[i].id,
+                      title: cart.items.values.toList()[i].title,
+                      price: cart.items.values.toList()[i].price,
+                      quantity: cart.items.values.toList()[i].quantity)))
         ],
       ),
     );
