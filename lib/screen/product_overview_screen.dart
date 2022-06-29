@@ -1,4 +1,5 @@
 import 'package:belanja_app/provider/cart.dart';
+import 'package:belanja_app/widgets/app_drawer.dart';
 import 'package:belanja_app/widgets/badge.dart';
 import 'package:belanja_app/widgets/product_grid.dart';
 import 'package:flutter/material.dart';
@@ -55,6 +56,7 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
                     ])
           ],
         ),
+        drawer: const AppDrawer(),
         body: ProductGrid(
           productFavs: _showOnlyFavorite,
         ));

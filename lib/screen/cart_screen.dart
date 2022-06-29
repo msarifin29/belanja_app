@@ -1,4 +1,5 @@
 import 'package:belanja_app/provider/cart.dart' show Cart;
+import 'package:belanja_app/provider/order.dart';
 import 'package:belanja_app/widgets/cart_item.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,13 @@ class CartScreen extends StatelessWidget {
                       labelStyle: TextStyle(
                           color: Theme.of(context).colorScheme.onPrimary),
                     ),
-                    TextButton(onPressed: () {}, child: const Text('Order Now'))
+                    TextButton(
+                        onPressed: () {
+                          Provider.of<Orders>(context, listen: false).addOrder(
+                              cart.items.values.toList(), cart.totalAmount);
+                          cart.clear();
+                        },
+                        child: const Text('Order Now'))
                   ]),
             ),
           ),
