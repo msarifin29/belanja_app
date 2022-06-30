@@ -1,4 +1,3 @@
-import 'package:belanja_app/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 
 class CartItem {
