@@ -5,6 +5,7 @@ import 'package:belanja_app/screen/cart_screen.dart';
 import 'package:belanja_app/screen/order_screen.dart';
 import 'package:belanja_app/screen/product_detail_screen.dart';
 import 'package:belanja_app/screen/product_overview_screen.dart';
+import 'package:belanja_app/screen/user_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +36,7 @@ class MyApp extends StatelessWidget {
           '/product-detail': (context) => const ProductDetailScreen(),
           '/cart': (context) => const CartScreen(),
           '/orders': (context) => const OrderScreen(),
+          '/user-product': (context) => const UserProducrScreen(),
         },
         home: const ProductsOverviewScreen(),
       ),
