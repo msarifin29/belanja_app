@@ -1,3 +1,4 @@
+import 'package:belanja_app/widgets/product_item.dart';
 import 'package:flutter/material.dart';
 
 class CartItem {
@@ -56,6 +57,24 @@ class Cart with ChangeNotifier {
 
   void removeItem(String productId) {
     _items!.remove(productId);
+    notifyListeners();
+  }
+
+  void removeSingleItem(String productId) {
+    if (!_items!.containsKey(productId)) {
+      return;
+    }
+    if (_items![productId]!.quantity > 1) {
+      _items!.update(
+          productId,
+          (existingCart) => CartItem(
+              id: existingCart.id,
+              title: existingCart.title,
+              price: existingCart.price,
+              quantity: existingCart.quantity - 1));
+    } else {
+      _items!.remove(productId);
+    }
     notifyListeners();
   }
 
