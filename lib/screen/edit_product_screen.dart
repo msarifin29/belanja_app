@@ -1,5 +1,7 @@
 import 'package:belanja_app/provider/product.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '../provider/products.dart';
 
 class EditProductScreen extends StatefulWidget {
   const EditProductScreen({Key? key}) : super(key: key);
@@ -54,9 +56,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       return;
     }
     _formKey.currentState!.save();
-    print(_editedProduct.title);
-    print(_editedProduct.price);
-    print(_editedProduct.imageUrl);
+    Provider.of<Products>(context, listen: false).addProduct(_editedProduct);
+    Navigator.of(context).pop();
   }
 
   @override
