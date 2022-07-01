@@ -2,6 +2,7 @@ import 'package:belanja_app/provider/cart.dart';
 import 'package:belanja_app/provider/order.dart';
 import 'package:belanja_app/provider/products.dart';
 import 'package:belanja_app/screen/cart_screen.dart';
+import 'package:belanja_app/screen/edit_product_screen.dart';
 import 'package:belanja_app/screen/order_screen.dart';
 import 'package:belanja_app/screen/product_detail_screen.dart';
 import 'package:belanja_app/screen/product_overview_screen.dart';
@@ -37,6 +38,7 @@ class MyApp extends StatelessWidget {
           '/cart': (context) => const CartScreen(),
           '/orders': (context) => const OrderScreen(),
           '/user-product': (context) => const UserProducrScreen(),
+          '/edit-product': (context) => const EditProductScreen(),
         },
         home: const ProductsOverviewScreen(),
       ),
