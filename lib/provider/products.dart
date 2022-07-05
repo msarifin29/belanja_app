@@ -53,7 +53,7 @@ class Products with ChangeNotifier {
     return _items.firstWhere((prod) => prod.id == id);
   }
 
-//add product
+// add new product and sending post request
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
       'https://belanja-app-1015a-default-rtdb.firebaseio.com/products.json',
@@ -85,6 +85,7 @@ class Products with ChangeNotifier {
     }
   }
 
+// fetching data product
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
       'https://belanja-app-1015a-default-rtdb.firebaseio.com/products.json',
@@ -110,10 +111,21 @@ class Products with ChangeNotifier {
     }
   }
 
-//update product
-  void updateProduct(String id, Product newProduct) {
+// update data product via PATCH request
+  Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((prod) => prod.id == id);
     if (productIndex >= 0) {
+      _items[productIndex] = newProduct;
+      final url = Uri.parse(
+        'https://belanja-app-1015a-default-rtdb.firebaseio.com/$id.json',
+      );
+      await http.patch(url,
+          body: json.encode({
+            'title': newProduct.title,
+            'description': newProduct.description,
+            'price': newProduct.price,
+            'imageUrl': newProduct.imageUrl
+          }));
       _items[productIndex] = newProduct;
       notifyListeners();
     } else {
