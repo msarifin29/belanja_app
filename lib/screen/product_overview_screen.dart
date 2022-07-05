@@ -4,6 +4,7 @@ import 'package:belanja_app/widgets/badge.dart';
 import 'package:belanja_app/widgets/product_grid.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../provider/products.dart';
 
 // ignore: constant_identifier_names
 enum FilterOptions { MyFavorite, All }
@@ -17,6 +18,25 @@ class ProductsOverviewScreen extends StatefulWidget {
 
 class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
   bool _showOnlyFavorite = false;
+  var _isInit = true;
+  var _isLoading = false;
+
+  @override
+  void didChangeDependencies() {
+    if (_isInit) {
+      setState(() {
+        _isLoading = true;
+      });
+      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
+        setState(() {
+          _isLoading = false;
+        });
+      });
+    }
+    _isInit = false;
+    super.didChangeDependencies();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +77,12 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
           ],
         ),
         drawer: const AppDrawer(),
-        body: ProductGrid(
-          productFavs: _showOnlyFavorite,
-        ));
+        body: _isLoading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : ProductGrid(
+                productFavs: _showOnlyFavorite,
+              ));
   }
 }

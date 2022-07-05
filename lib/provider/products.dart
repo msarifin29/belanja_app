@@ -81,6 +81,31 @@ class Products with ChangeNotifier {
       //_items.inssert(0, newProduct); // at the start of the list
       notifyListeners();
     } catch (error) {
+      rethrow;
+    }
+  }
+
+  Future<void> fetchAndSetProducts() async {
+    final url = Uri.parse(
+      'https://belanja-app-1015a-default-rtdb.firebaseio.com/products.json',
+    );
+    try {
+      final response = await http.get(url);
+      final extractedData = json.decode(response.body) as Map<String, dynamic>;
+      final List<Product> loadedData = [];
+      extractedData.forEach((prodId, prodData) {
+        loadedData.add(Product(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            isFavorite: prodData['isFavorite'],
+            price: prodData['price'],
+            imageUrl: prodData['imageUrl']));
+      });
+      _items = loadedData;
+      notifyListeners();
+    } catch (error) {
+      // ignore: use_rethrow_when_possible
       throw error;
     }
   }
