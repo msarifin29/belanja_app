@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -117,7 +118,7 @@ class Products with ChangeNotifier {
     if (productIndex >= 0) {
       _items[productIndex] = newProduct;
       final url = Uri.parse(
-        'https://belanja-app-1015a-default-rtdb.firebaseio.com/$id.json',
+        'https://belanja-app-1015a-default-rtdb.firebaseio.com/products/$id.json',
       );
       await http.patch(url,
           body: json.encode({
@@ -135,8 +136,21 @@ class Products with ChangeNotifier {
   }
 
 //delete product
-  void deleteProduct(String id) {
-    _items.removeWhere((prod) => prod.id == id);
+  Future<void> deleteProduct(String id) async {
+    final url = Uri.parse(
+      'https://belanja-app-1015a-default-rtdb.firebaseio.com/products/$id.json',
+    );
+    final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    Product? existingProduct = _items[existingProductIndex];
+    _items.removeAt(existingProductIndex);
     notifyListeners();
+    final response = await http.delete(url);
+    print(response.statusCode);
+    if (response.statusCode >= 400) {
+      _items.insert(existingProductIndex, existingProduct);
+      notifyListeners();
+      throw const HttpException('Could not delete product. ');
+    }
+    existingProduct = null;
   }
 }
