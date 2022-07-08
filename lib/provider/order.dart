@@ -65,4 +65,32 @@ class Orders with ChangeNotifier {
       throw UnsupportedError('Cannot conver to JSon');
     }
   }
+
+  Future<void> fetchAndSetOrders() async {
+    final url = Uri.parse(
+      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json',
+    );
+    try {
+      final response = await http.get(url);
+      if (jsonDecode(response.body) == null) return;
+      final extractData = json.decode(response.body) as Map<String, dynamic>;
+      final List<OrderItem> loadedData = [];
+      extractData.forEach((ordId, ordData) {
+        loadedData.add(OrderItem(
+            amount: ordData['amount'],
+            dateTime: DateTime.parse(ordData['dateTime']),
+            products: (ordData['products'] as List<dynamic>)
+                .map((item) => CartItem(
+                    id: item['id'],
+                    title: item['title'],
+                    price: item['price'],
+                    quantity: item['quantity']))
+                .toList()));
+      });
+      _orders = loadedData.reversed.toList();
+      notifyListeners();
+    } catch (error) {
+      rethrow;
+    }
+  }
 }
