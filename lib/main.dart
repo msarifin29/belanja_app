@@ -1,6 +1,8 @@
+import 'package:belanja_app/provider/auth.dart';
 import 'package:belanja_app/provider/cart.dart';
 import 'package:belanja_app/provider/order.dart';
 import 'package:belanja_app/provider/products.dart';
+import 'package:belanja_app/screen/aut_screen.dart';
 import 'package:belanja_app/screen/cart_screen.dart';
 import 'package:belanja_app/screen/edit_product_screen.dart';
 import 'package:belanja_app/screen/order_screen.dart';
@@ -21,6 +23,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (ctx) => Auth()),
         ChangeNotifierProvider(create: (ctx) => Products()),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
@@ -39,8 +42,9 @@ class MyApp extends StatelessWidget {
           '/orders': (context) => const OrderScreen(),
           '/user-product': (context) => const UserProducrScreen(),
           '/edit-product': (context) => const EditProductScreen(),
+          '/auth': (context) => const AuthScreen(),
         },
-        home: const ProductsOverviewScreen(),
+        home: const AuthScreen(),
       ),
     );
   }
