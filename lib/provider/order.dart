@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 
 class OrderItem {
   final String? id;
-  final double amount;
+  final double? amount;
   final List<CartItem> products;
   final DateTime dateTime;
 
@@ -28,13 +28,17 @@ class Orders with ChangeNotifier {
   // ignore: prefer_final_fields
   List<OrderItem> _orders = [];
 
+  final String? authToken;
+
+  Orders(this.authToken, this._orders);
+
   List<OrderItem> get orders {
     return [..._orders];
   }
 
   Future<void> addOrder(List<CartItem> cartProduct, double total) async {
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json',
+      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json?=$authToken',
     );
     final timeStep = DateTime.now();
 
@@ -68,7 +72,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json',
+      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json?=$authToken',
     );
     try {
       final response = await http.get(url);

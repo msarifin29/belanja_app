@@ -14,16 +14,16 @@ class ProductDetailScreen extends StatelessWidget {
         Provider.of<Products>(context, listen: false).findById(productId);
     return Scaffold(
       appBar: AppBar(
-        title: Text(loadedProduct.title),
+        title: Text(loadedProduct.title!),
       ),
       body: SingleChildScrollView(
           child: Column(
         children: [
-          Container(
+          SizedBox(
             height: 300,
             width: double.infinity,
             child: Image.network(
-              loadedProduct.imageUrl,
+              loadedProduct.imageUrl!,
               fit: BoxFit.cover,
             ),
           ),
@@ -43,7 +43,7 @@ class ProductDetailScreen extends StatelessWidget {
               horizontal: 10,
             ),
             child: Text(
-              loadedProduct.description,
+              loadedProduct.description.toString(),
               softWrap: true,
               textAlign: TextAlign.center,
             ),

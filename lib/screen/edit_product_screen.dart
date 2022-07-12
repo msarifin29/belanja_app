@@ -44,12 +44,12 @@ class _EditProductScreenState extends State<EditProductScreen> {
         _editedProduct =
             Provider.of<Products>(context, listen: false).findById(productId);
         _initialValue = {
-          'title': _editedProduct.title,
-          'description': _editedProduct.description,
+          'title': _editedProduct.title!,
+          'description': _editedProduct.description!,
           'price': _editedProduct.price.toString(),
           'imageUrl': ' ',
         };
-        _imageUrlController.text = _editedProduct.imageUrl;
+        _imageUrlController.text = _editedProduct.imageUrl!;
       }
     }
     _isInit = false;
@@ -281,7 +281,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                                 isFavorite: _editedProduct.isFavorite,
                                 title: _editedProduct.title,
                                 description: _editedProduct.description,
-                                imageUrl: value.toString(),
+                                imageUrl: value!,
                                 price: _editedProduct.price);
                           },
                         ),

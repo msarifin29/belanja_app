@@ -3,6 +3,8 @@ import 'package:belanja_app/provider/product.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../provider/auth.dart';
+
 class ProductItem extends StatelessWidget {
   const ProductItem({
     Key? key,
@@ -10,7 +12,9 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool _isStatus = false;
     final product = Provider.of<Product>(context, listen: false);
+    final authData = Provider.of<Auth>(context, listen: false);
     final cart = Provider.of<Cart>(
       context,
     );
@@ -23,7 +27,7 @@ class ProductItem extends StatelessWidget {
                 arguments: product.id);
           },
           child: Image.network(
-            product.imageUrl,
+            product.imageUrl!,
             fit: BoxFit.cover,
           ),
         ),
@@ -32,20 +36,22 @@ class ProductItem extends StatelessWidget {
           leading: Consumer<Product>(
             builder: (context, product, _) => IconButton(
                 onPressed: () {
-                  product.toggleFavoriteStatus();
+                  product.toggleFavoriteStatus(authData.token.toString());
                 },
                 icon: Icon(
-                  product.isFavorite ? Icons.favorite : Icons.favorite_border,
+                  product.isFavorite == _isStatus
+                      ? Icons.favorite_border
+                      : Icons.favorite,
                   color: Theme.of(context).colorScheme.secondary,
                 )),
           ),
           title: Text(
-            product.title,
+            product.title.toString(),
             textAlign: TextAlign.center,
           ),
           trailing: IconButton(
               onPressed: () {
-                cart.addItem(product.id!, product.price, product.title);
+                cart.addItem(product.id!, product.price!, product.title!);
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(

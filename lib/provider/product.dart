@@ -5,11 +5,11 @@ import 'package:http/http.dart' as http;
 
 class Product with ChangeNotifier {
   final String? id;
-  final String title;
-  final String description;
-  final String imageUrl;
-  final double price;
-  bool isFavorite;
+  final String? title;
+  final String? description;
+  final String? imageUrl;
+  final double? price;
+  bool? isFavorite;
 
   Product(
       {required this.id,
@@ -23,21 +23,21 @@ class Product with ChangeNotifier {
     isFavorite = newValue;
   }
 
-  Future<void> toggleFavoriteStatus() async {
+  Future<void> toggleFavoriteStatus(String? token) async {
     final oldStatus = isFavorite;
-    isFavorite = !isFavorite;
+    isFavorite = !isFavorite!;
     notifyListeners();
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/products/$id.json',
+      'https://belanja-app-1015a-default-rtdb.firebaseio.com/products/$id.json?=$token',
     );
     try {
       final response =
           await http.patch(url, body: json.encode({'isFavorite': isFavorite}));
       if (response.statusCode >= 400) {
-        _setFavValue(oldStatus);
+        _setFavValue(oldStatus!);
       }
     } catch (error) {
-      _setFavValue(oldStatus);
+      _setFavValue(oldStatus!);
     }
   }
 }

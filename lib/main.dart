@@ -24,28 +24,40 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (ctx) => Auth()),
-        ChangeNotifierProvider(create: (ctx) => Products()),
+        ChangeNotifierProxyProvider<Auth, Products>(
+            create: (_) => Products('', [], ''),
+            update: (context, auth, previousProducts) => Products(
+                auth.token.toString(),
+                previousProducts!.items,
+                previousProducts.userId)),
         ChangeNotifierProvider(
           create: (ctx) => Cart(),
         ),
-        ChangeNotifierProvider(create: (ctx) => Orders())
+        ChangeNotifierProxyProvider<Auth, Orders>(
+            create: (_) => Orders('', []),
+            update: (context, auth, prevousOrders) =>
+                Orders(auth.token, prevousOrders!.orders))
       ],
-      child: MaterialApp(
-        theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-                .copyWith(secondary: Colors.deepOrange),
-            fontFamily: 'Lato'),
-        initialRoute: '/',
-        routes: <String, WidgetBuilder>{
-          '/product-detail': (context) => const ProductDetailScreen(),
-          '/cart': (context) => const CartScreen(),
-          '/orders': (context) => const OrderScreen(),
-          '/user-product': (context) => const UserProducrScreen(),
-          '/edit-product': (context) => const EditProductScreen(),
-          '/auth': (context) => const AuthScreen(),
-        },
-        home: const AuthScreen(),
-      ),
+      child: Consumer<Auth>(
+          builder: (context, auth, _) => MaterialApp(
+                theme: ThemeData(
+                    colorScheme:
+                        ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+                            .copyWith(secondary: Colors.deepOrange),
+                    fontFamily: 'Lato'),
+                initialRoute: '/',
+                routes: <String, WidgetBuilder>{
+                  '/product-detail': (context) => const ProductDetailScreen(),
+                  '/cart': (context) => const CartScreen(),
+                  '/orders': (context) => const OrderScreen(),
+                  '/user-product': (context) => const UserProducrScreen(),
+                  '/edit-product': (context) => const EditProductScreen(),
+                  '/auth': (context) => const AuthScreen(),
+                },
+                home: auth.isAuth
+                    ? const AuthScreen()
+                    : const ProductsOverviewScreen(),
+              )),
     );
   }
 }
