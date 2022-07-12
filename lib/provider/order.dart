@@ -11,7 +11,7 @@ class OrderItem {
   final DateTime dateTime;
 
   OrderItem(
-      {this.id,
+      {required this.id,
       required this.amount,
       required this.products,
       required this.dateTime});
@@ -29,20 +29,23 @@ class Orders with ChangeNotifier {
   List<OrderItem> _orders = [];
 
   final String? authToken;
+  final String? userId;
 
-  Orders(this.authToken, this._orders);
+  Orders(this.authToken, this.userId, this._orders);
 
   List<OrderItem> get orders {
     return [..._orders];
   }
 
   Future<void> addOrder(List<CartItem> cartProduct, double total) async {
+    // input url here
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?=$authToken',
     );
     final timeStep = DateTime.now();
 
     try {
+      // send data to Database
       final response = await http.post(url,
           body: json.encode({
             'amount': total,
@@ -72,15 +75,18 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/orders.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?=$authToken',
     );
     try {
+      // get data from Database
       final response = await http.get(url);
+      // check response if null
       if (jsonDecode(response.body) == null) return;
       final extractData = json.decode(response.body) as Map<String, dynamic>;
       final List<OrderItem> loadedData = [];
       extractData.forEach((ordId, ordData) {
         loadedData.add(OrderItem(
+            id: ordId,
             amount: ordData['amount'],
             dateTime: DateTime.parse(ordData['dateTime']),
             products: (ordData['products'] as List<dynamic>)

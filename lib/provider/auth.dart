@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 class Auth with ChangeNotifier {
   String? _token;
-  DateTime? experyDate;
+  DateTime? _experyDate;
   String? _userId;
   // Auth({required this.userId, required this.token, required this.experyDate});
 
@@ -14,22 +14,25 @@ class Auth with ChangeNotifier {
   }
 
   String? get token {
-    if (_token != '' && experyDate != null) {
+    if (_token != null &&
+        _experyDate != null &&
+        _experyDate!.isAfter(DateTime.now())) {
       return _token;
     }
     return null;
   }
 
   String get userId {
-    return _userId!;
+    return _userId.toString();
   }
 
-  Future<void> authenticate(
+  Future<void> _authenticate(
       String email, String password, String urlSegment) async {
-    const apiKey = 'AIzaSyCZZmbaQOe6KIGikGRsMwLfwKu_nd1H-3o';
+    //api key from web
+    const apiKey = 'AIzaSyASwdp2KtFbBj1ROqAwiUTM7olci2N4jH4';
+    final url = Uri.parse(
+        'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$apiKey');
     try {
-      final url = Uri.parse(
-          'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$apiKey');
       final response = await http.post(url,
           body: jsonEncode({
             'email': email,
@@ -38,11 +41,16 @@ class Auth with ChangeNotifier {
           }));
 
       final responseData = jsonDecode(response.body);
+      print(responseData);
       if (responseData['error'] != null) {
+        // check the response if an error occurs
         throw HttpException(responseData['error']['message']);
       }
+      // default response from database Map<String, dynamic>
       _token = responseData['idToken'];
       _userId = responseData['localId'];
+      _experyDate = DateTime.now()
+          .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -51,11 +59,11 @@ class Auth with ChangeNotifier {
 
   Future<void> sigup(String email, String password) async {
     //  return authenticate(email, password, 'signUpNewUser');
-    return authenticate(email, password, 'signUp');
+    return _authenticate(email, password, 'signUp');
   }
 
   Future<void> login(String email, String password) async {
     //  return authenticate(email, password, 'verifypassword');
-    return authenticate(email, password, 'signInWithPassword');
+    return _authenticate(email, password, 'signInWithPassword');
   }
 }

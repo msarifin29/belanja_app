@@ -43,7 +43,7 @@ class _OrderScreenState extends State<OrderScreen> {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
-            return const Text('An error occured!');
+            return const Text('Terjadi kesalahan!');
           }
           return Consumer<Orders>(
             builder: (context, orderData, child) => ListView.builder(

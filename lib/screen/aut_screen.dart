@@ -84,11 +84,11 @@ class _AuthCardState extends State<AuthCard> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('An Error Occurred!'),
+        title: const Text('Terjadi kesalahan!'),
         content: Text(message),
         actions: <Widget>[
           TextButton(
-            child: const Text('Okay'),
+            child: const Text('Oke'),
             onPressed: () {
               Navigator.of(ctx).pop();
             },
@@ -120,20 +120,19 @@ class _AuthCardState extends State<AuthCard> {
     } on HttpException catch (error) {
       var errorMessage = 'Authentication failed';
       if (error.toString().contains('EMAIL_EXISTS')) {
-        errorMessage = 'This email address is already in use.';
+        errorMessage = 'Email ini sudah digunakan.';
       } else if (error.toString().contains('INVALID_EMAIL')) {
-        errorMessage = 'This is not a valid email address';
+        errorMessage = 'Masukkan Email yang benar!';
       } else if (error.toString().contains('WEAK_PASSWORD')) {
-        errorMessage = 'This password is too weak.';
+        errorMessage = 'Password minimal 5 karakter.';
       } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
-        errorMessage = 'Could not find a user with that email.';
+        errorMessage = 'Tidak ada nama pengguna dengan email ini!.';
       } else if (error.toString().contains('INVALID_PASSWORD')) {
-        errorMessage = 'Invalid password.';
+        errorMessage = 'Password salah!.';
       }
       _showErrorDialog(errorMessage);
     } catch (error) {
-      const errorMessage =
-          'Could not authenticate you. Please try again later.';
+      const errorMessage = 'Terjadi kesalahan. Coba lagi!.';
       _showErrorDialog(errorMessage);
     }
     setState(() {
@@ -176,7 +175,7 @@ class _AuthCardState extends State<AuthCard> {
                     decoration: const InputDecoration(labelText: 'E-mail'),
                     validator: (value) {
                       if (value!.isEmpty || !value.contains('@')) {
-                        return 'Invalid email';
+                        return 'Email salah';
                       }
                       return null;
                     },
@@ -190,7 +189,7 @@ class _AuthCardState extends State<AuthCard> {
                     controller: passwordController,
                     validator: (value) {
                       if (value!.isEmpty || value.length < 5) {
-                        return 'Password is to sort!';
+                        return 'Password minimal terdiri dari 5 karakter!';
                       }
                       return null;
                     },
@@ -207,7 +206,7 @@ class _AuthCardState extends State<AuthCard> {
                         validator: _authMode == AuthMode.Signup
                             ? (value) {
                                 if (value != passwordController.text) {
-                                  return 'Password do not match!';
+                                  return 'Kata sandi tidak cocok!';
                                 }
                                 return null;
                               }

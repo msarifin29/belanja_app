@@ -22,42 +22,37 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (ctx) => Auth()),
-        ChangeNotifierProxyProvider<Auth, Products>(
-            create: (_) => Products('', [], ''),
-            update: (context, auth, previousProducts) => Products(
-                auth.token.toString(),
-                previousProducts!.items,
-                previousProducts.userId)),
-        ChangeNotifierProvider(
-          create: (ctx) => Cart(),
-        ),
-        ChangeNotifierProxyProvider<Auth, Orders>(
-            create: (_) => Orders('', []),
-            update: (context, auth, prevousOrders) =>
-                Orders(auth.token, prevousOrders!.orders))
-      ],
-      child: Consumer<Auth>(
-          builder: (context, auth, _) => MaterialApp(
-                theme: ThemeData(
-                    colorScheme:
-                        ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-                            .copyWith(secondary: Colors.deepOrange),
-                    fontFamily: 'Lato'),
-                initialRoute: '/',
-                routes: <String, WidgetBuilder>{
-                  '/product-detail': (context) => const ProductDetailScreen(),
-                  '/cart': (context) => const CartScreen(),
-                  '/orders': (context) => const OrderScreen(),
-                  '/user-product': (context) => const UserProducrScreen(),
-                  '/edit-product': (context) => const EditProductScreen(),
-                  '/auth': (context) => const AuthScreen(),
-                },
-                home: auth.isAuth
-                    ? const AuthScreen()
-                    : const ProductsOverviewScreen(),
-              )),
-    );
+        providers: [
+          ChangeNotifierProvider(create: (ctx) => Auth()),
+          ChangeNotifierProxyProvider<Auth, Products>(
+              create: (_) => Products('', [], ''),
+              update: (context, auth, previousProducts) =>
+                  Products(auth.token, previousProducts!.items, auth.userId)),
+          ChangeNotifierProvider(
+            create: (ctx) => Cart(),
+          ),
+          ChangeNotifierProxyProvider<Auth, Orders>(
+              create: (_) => Orders('', '', []),
+              update: (context, auth, prevousOrders) =>
+                  Orders(auth.token, auth.userId, prevousOrders!.orders))
+        ],
+        child: Consumer<Auth>(
+            builder: (context, auth, _) => MaterialApp(
+                  theme: ThemeData(
+                      colorScheme:
+                          ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+                              .copyWith(secondary: Colors.deepOrange),
+                      fontFamily: 'Lato'),
+                  // initialRoute: '/',
+                  routes: <String, WidgetBuilder>{
+                    '/product-detail': (context) => const ProductDetailScreen(),
+                    '/cart': (context) => const CartScreen(),
+                    '/orders': (context) => const OrderScreen(),
+                    '/user-product': (context) => const UserProducrScreen(),
+                    '/edit-product': (context) => const EditProductScreen(),
+                    '/auth': (context) => const AuthScreen(),
+                  },
+                  home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
+                )));
   }
 }

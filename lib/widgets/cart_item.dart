@@ -38,20 +38,19 @@ class CartItem extends StatelessWidget {
         return showDialog(
             context: context,
             builder: (context) => AlertDialog(
-                  title: const Text('Are you sure ?'),
-                  content:
-                      const Text('Do you want remove the item from the cart ?'),
+                  title: const Text('Apakah anda yakin ?'),
+                  content: const Text('Ingin menghapus dari keranjang ?'),
                   actions: [
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pop(false);
                         },
-                        child: const Text('No')),
+                        child: const Text('Tidak')),
                     TextButton(
                         onPressed: () {
                           Navigator.of(context).pop(true);
                         },
-                        child: const Text('Yes')),
+                        child: const Text('Ya')),
                   ],
                 ));
       },

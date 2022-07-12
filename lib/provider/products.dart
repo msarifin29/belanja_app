@@ -62,7 +62,7 @@ class Products with ChangeNotifier {
 // add new product and sending post request
   Future<void> addProduct(Product product) async {
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/products.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken',
     );
     try {
       final res = await http.post(
@@ -73,7 +73,6 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
-            'isFavorite': product.isFavorite
           },
         ),
       );
@@ -94,19 +93,24 @@ class Products with ChangeNotifier {
 // fetching data product
   Future<void> fetchAndSetProducts() async {
     final url = Uri.parse(
-        'https://belanja-app-1015a-default-rtdb.firebaseio.com/products.json?=$authToken');
+        'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken');
     try {
       final response = await http.get(url);
       if (jsonDecode(response.body) == null) return;
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
       print(extractedData);
+      var urlFav = Uri.parse(
+          'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId.json?=$authToken');
+      var favoriteResponse = await http.get(urlFav);
+      final favoriteData = json.decode(favoriteResponse.body);
       final List<Product> loadedData = [];
       extractedData.forEach((prodId, prodData) {
         loadedData.add(Product(
             id: prodId,
             title: prodData['title'],
             description: prodData['description'],
-            isFavorite: prodData['isFavorite'],
+            isFavorite:
+                favoriteData == null ? false : favoriteData[prodId] ?? false,
             price: prodData['price'],
             imageUrl: prodData['imageUrl']));
       });
@@ -124,7 +128,7 @@ class Products with ChangeNotifier {
     if (productIndex >= 0) {
       _items[productIndex] = newProduct;
       final url = Uri.parse(
-          'https://belanja-app-1015a-default-rtdb.firebaseio.com/products/$id.json');
+          'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken');
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -134,16 +138,13 @@ class Products with ChangeNotifier {
           }));
       _items[productIndex] = newProduct;
       notifyListeners();
-    } else {
-      // ignore: avoid_print
-      print('...');
-    }
+    } else {}
   }
 
 //delete product
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-      'https://belanja-app-1015a-default-rtdb.firebaseio.com/products/$id.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken',
     );
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     Product? existingProduct = _items[existingProductIndex];
