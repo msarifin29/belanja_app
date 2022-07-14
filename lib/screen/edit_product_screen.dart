@@ -81,7 +81,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
 
   Future<void> _saveForm() async {
     final isValid = _formKey.currentState!.validate();
-    if (!isValid) {
+    if (isValid == false) {
       return;
     }
     _formKey.currentState!.save();
@@ -99,8 +99,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
         await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
-            title: const Text('An error occurred!'),
-            content: const Text('Something went wrong.'),
+            title: const Text('Terjadi kesalahan!'),
+            content: const Text('Terjadi Kesalahan.'),
             actions: <Widget>[
               TextButton(
                 child: const Text('Okay'),
@@ -161,7 +161,7 @@ class _EditProductScreenState extends State<EditProductScreen> {
                       _editedProduct = Product(
                           id: _editedProduct.id,
                           isFavorite: _editedProduct.isFavorite,
-                          title: value.toString(),
+                          title: value!,
                           description: _editedProduct.description,
                           imageUrl: _editedProduct.imageUrl,
                           price: _editedProduct.price);

@@ -12,7 +12,7 @@ class Product with ChangeNotifier {
   bool? isFavorite;
 
   Product(
-      {required this.id,
+      {this.id,
       required this.title,
       required this.description,
       required this.imageUrl,
@@ -25,7 +25,7 @@ class Product with ChangeNotifier {
   }
 
 // toggle status favorite item by default is false
-  Future<void> toggleFavoriteStatus(String? token, String userId) async {
+  Future<void> toggleFavoriteStatus(String? token, String? userId) async {
     final oldStatus = isFavorite;
     isFavorite = !isFavorite!;
     notifyListeners();

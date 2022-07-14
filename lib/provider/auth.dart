@@ -41,14 +41,15 @@ class Auth with ChangeNotifier {
           }));
 
       final responseData = jsonDecode(response.body);
-      print(responseData);
       if (responseData['error'] != null) {
         // check the response if an error occurs
         throw HttpException(responseData['error']['message']);
       }
       // default response from database Map<String, dynamic>
       _token = responseData['idToken'];
+      print('isToken : $_token');
       _userId = responseData['localId'];
+      print('isId : $_userId');
       _experyDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       notifyListeners();

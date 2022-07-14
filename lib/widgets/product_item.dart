@@ -12,7 +12,6 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool _isStatus = false;
     final product = Provider.of<Product>(context, listen: false);
     final authData = Provider.of<Auth>(context, listen: false);
     final cart = Provider.of<Cart>(context, listen: false);
@@ -35,7 +34,7 @@ class ProductItem extends StatelessWidget {
             builder: (context, product, _) => IconButton(
                 onPressed: () {
                   product.toggleFavoriteStatus(
-                      authData.token.toString(), authData.userId);
+                      authData.token.toString(), authData.userId.toString());
                 },
                 icon: Icon(
                   product.isFavorite! ? Icons.favorite : Icons.favorite_border,
@@ -52,7 +51,7 @@ class ProductItem extends StatelessWidget {
                 ScaffoldMessenger.of(context).hideCurrentSnackBar();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                      content: const Text('Added item to cart !'),
+                      content: const Text('Berhasil ditambah ke keranjang !'),
                       duration: const Duration(seconds: 2),
                       action: SnackBarAction(
                           label: 'Undo',

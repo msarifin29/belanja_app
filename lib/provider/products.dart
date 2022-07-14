@@ -73,6 +73,7 @@ class Products with ChangeNotifier {
             'description': product.description,
             'imageUrl': product.imageUrl,
             'price': product.price,
+            'creatorId': userId
           },
         ),
       );
@@ -91,14 +92,15 @@ class Products with ChangeNotifier {
   }
 
 // fetching data product
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([filterByUser = false]) async {
+    var filterString =
+        filterByUser ? "orderBy=\"creatorId\"&equalTo=\"$userId\"" : "";
     final url = Uri.parse(
-        'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken');
+        'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken&$filterString');
     try {
       final response = await http.get(url);
       if (jsonDecode(response.body) == null) return;
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
-      print(extractedData);
       var urlFav = Uri.parse(
           'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId.json?=$authToken');
       var favoriteResponse = await http.get(urlFav);
@@ -126,9 +128,8 @@ class Products with ChangeNotifier {
   Future<void> updateProduct(String id, Product newProduct) async {
     final productIndex = _items.indexWhere((prod) => prod.id == id);
     if (productIndex >= 0) {
-      _items[productIndex] = newProduct;
       final url = Uri.parse(
-          'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken');
+          'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?=$authToken');
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -138,13 +139,15 @@ class Products with ChangeNotifier {
           }));
       _items[productIndex] = newProduct;
       notifyListeners();
-    } else {}
+    } else {
+      print('....');
+    }
   }
 
 //delete product
   Future<void> deleteProduct(String id) async {
     final url = Uri.parse(
-      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?=$authToken',
     );
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
     Product? existingProduct = _items[existingProductIndex];

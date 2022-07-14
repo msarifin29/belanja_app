@@ -75,7 +75,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchAndSetOrders() async {
     final url = Uri.parse(
-      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/orders/$userId.json?=$authToken',
     );
     try {
       // get data from Database
