@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/auth.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
@@ -55,6 +58,21 @@ class AppDrawer extends StatelessWidget {
             ),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/user-product');
+            },
+          ),
+          const Divider(),
+          ListTile(
+            leading: const Icon(
+              Icons.exit_to_app_outlined,
+              size: 26,
+            ),
+            title: Text(
+              'Log Out',
+              style: styleText(),
+            ),
+            onTap: () {
+              Navigator.pop(context);
+              Provider.of<Auth>(context, listen: false).logOut();
             },
           )
         ],

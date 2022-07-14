@@ -47,9 +47,7 @@ class Auth with ChangeNotifier {
       }
       // default response from database Map<String, dynamic>
       _token = responseData['idToken'];
-      print('isToken : $_token');
       _userId = responseData['localId'];
-      print('isId : $_userId');
       _experyDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
       notifyListeners();
@@ -66,5 +64,12 @@ class Auth with ChangeNotifier {
   Future<void> login(String email, String password) async {
     //  return authenticate(email, password, 'verifypassword');
     return _authenticate(email, password, 'signInWithPassword');
+  }
+
+  void logOut() {
+    _token = null;
+    _userId = null;
+    _experyDate = null;
+    notifyListeners();
   }
 }

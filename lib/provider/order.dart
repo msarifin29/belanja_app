@@ -40,7 +40,7 @@ class Orders with ChangeNotifier {
   Future<void> addOrder(List<CartItem> cartProduct, double total) async {
     // input url here
     final url = Uri.parse(
-      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?=$authToken',
+      'https://belanja-bb72d-default-rtdb.asia-southeast1.firebasedatabase.app/orders/$userId.json?=$authToken',
     );
     final timeStep = DateTime.now();
 

@@ -45,11 +45,6 @@ class _ProductsOverviewScreenState extends State<ProductsOverviewScreen> {
             'Belanja',
           ),
           actions: [
-            IconButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/auth');
-                },
-                icon: Icon(Icons.exit_to_app)),
             Consumer<Cart>(
                 builder: (_, cart, ch) => Badge(
                       child: IconButton(
