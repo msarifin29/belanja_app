@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:async';
 import 'package:belanja_app/common/handling_error.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -7,6 +8,7 @@ class Auth with ChangeNotifier {
   String? _token;
   DateTime? _experyDate;
   String? _userId;
+  Timer? _autoTimer;
   // Auth({required this.userId, required this.token, required this.experyDate});
 
   bool get isAuth {
@@ -29,7 +31,7 @@ class Auth with ChangeNotifier {
   Future<void> _authenticate(
       String email, String password, String urlSegment) async {
     //api key from web
-    const apiKey = 'AIzaSyASwdp2KtFbBj1ROqAwiUTM7olci2N4jH4';
+    const apiKey = 'AIzaSyASwdp2KtFbBj1ROqAwiUTM7olci2N4j';
     final url = Uri.parse(
         'https://identitytoolkit.googleapis.com/v1/accounts:$urlSegment?key=$apiKey');
     try {
@@ -50,6 +52,7 @@ class Auth with ChangeNotifier {
       _userId = responseData['localId'];
       _experyDate = DateTime.now()
           .add(Duration(seconds: int.parse(responseData['expiresIn'])));
+      autoLogout();
       notifyListeners();
     } catch (error) {
       rethrow;
@@ -70,6 +73,17 @@ class Auth with ChangeNotifier {
     _token = null;
     _userId = null;
     _experyDate = null;
+    if (_autoTimer != null) {
+      _autoTimer!.cancel();
+    }
     notifyListeners();
+  }
+
+  void autoLogout() {
+    if (_autoTimer != null) {
+      _autoTimer!.cancel();
+    }
+    final timerToExpiry = _experyDate!.difference(DateTime.now()).inSeconds;
+    _autoTimer = Timer(Duration(seconds: timerToExpiry), logOut);
   }
 }
