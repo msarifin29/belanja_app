@@ -12,6 +12,7 @@ import 'package:belanja_app/screen/splash_screen.dart';
 import 'package:belanja_app/screen/user_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:belanja_app/helpers/custom_route.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +44,10 @@ class MyApp extends StatelessWidget {
                     colorScheme:
                         ColorScheme.fromSwatch(primarySwatch: Colors.purple)
                             .copyWith(secondary: Colors.deepOrange),
-                    fontFamily: 'Lato'),
+                    fontFamily: 'Lato',
+                    pageTransitionsTheme: PageTransitionsTheme(builders: {
+                      TargetPlatform.android: CustomPageTransitionBuilder()
+                    })),
                 // initialRoute: '/',
                 routes: <String, WidgetBuilder>{
                   '/product-detail': (context) => const ProductDetailScreen(),
