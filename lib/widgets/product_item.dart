@@ -23,12 +23,15 @@ class ProductItem extends StatelessWidget {
               Navigator.pushNamed(context, '/product-detail',
                   arguments: product.id);
             },
-            child: FadeInImage(
-              fit: BoxFit.cover,
-              placeholder: const AssetImage(
-                'assets/images/product-placeholder.png',
+            child: Hero(
+              tag: product.id!,
+              child: FadeInImage(
+                fit: BoxFit.cover,
+                placeholder: const AssetImage(
+                  'assets/images/product-placeholder.png',
+                ),
+                image: NetworkImage(product.imageUrl!),
               ),
-              image: NetworkImage(product.imageUrl!),
             )),
         footer: GridTileBar(
           backgroundColor: Colors.black87,
