@@ -15,7 +15,7 @@ class ProductGrid extends StatelessWidget {
     final product =
         productFavs ? providerData.favoriteItems : providerData.items;
     return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             mainAxisSpacing: 10,
             crossAxisSpacing: 10,

@@ -8,6 +8,7 @@ import 'package:belanja_app/screen/edit_product_screen.dart';
 import 'package:belanja_app/screen/order_screen.dart';
 import 'package:belanja_app/screen/product_detail_screen.dart';
 import 'package:belanja_app/screen/product_overview_screen.dart';
+import 'package:belanja_app/screen/splash_screen.dart';
 import 'package:belanja_app/screen/user_product_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -38,21 +39,28 @@ class MyApp extends StatelessWidget {
         ],
         child: Consumer<Auth>(
             builder: (context, auth, _) => MaterialApp(
-                  theme: ThemeData(
-                      colorScheme:
-                          ColorScheme.fromSwatch(primarySwatch: Colors.purple)
-                              .copyWith(secondary: Colors.deepOrange),
-                      fontFamily: 'Lato'),
-                  // initialRoute: '/',
-                  routes: <String, WidgetBuilder>{
-                    '/product-detail': (context) => const ProductDetailScreen(),
-                    '/cart': (context) => const CartScreen(),
-                    '/orders': (context) => const OrderScreen(),
-                    '/user-product': (context) => const UserProducrScreen(),
-                    '/edit-product': (context) => const EditProductScreen(),
-                    '/auth': (context) => const AuthScreen(),
-                  },
-                  home: auth.isAuth ? ProductsOverviewScreen() : AuthScreen(),
-                )));
+                theme: ThemeData(
+                    colorScheme:
+                        ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+                            .copyWith(secondary: Colors.deepOrange),
+                    fontFamily: 'Lato'),
+                // initialRoute: '/',
+                routes: <String, WidgetBuilder>{
+                  '/product-detail': (context) => const ProductDetailScreen(),
+                  '/cart': (context) => const CartScreen(),
+                  '/orders': (context) => const OrderScreen(),
+                  '/user-product': (context) => const UserProducrScreen(),
+                  '/edit-product': (context) => const EditProductScreen(),
+                  '/auth': (context) => const AuthScreen(),
+                },
+                home: auth.isAuth
+                    ? const ProductsOverviewScreen()
+                    : FutureBuilder(
+                        future: auth.tryAutoLogin(),
+                        builder: (context, authResultSnapshot) =>
+                            authResultSnapshot.connectionState ==
+                                    ConnectionState.waiting
+                                ? const SplashScreen()
+                                : const AuthScreen()))));
   }
 }

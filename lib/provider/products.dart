@@ -139,9 +139,7 @@ class Products with ChangeNotifier {
           }));
       _items[productIndex] = newProduct;
       notifyListeners();
-    } else {
-      print('....');
-    }
+    } else {}
   }
 
 //delete product
