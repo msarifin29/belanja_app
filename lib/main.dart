@@ -42,7 +42,7 @@ class MyApp extends StatelessWidget {
             builder: (context, auth, _) => MaterialApp(
                 theme: ThemeData(
                     colorScheme:
-                        ColorScheme.fromSwatch(primarySwatch: Colors.purple)
+                        ColorScheme.fromSwatch(primarySwatch: Colors.green)
                             .copyWith(secondary: Colors.deepOrange),
                     fontFamily: 'Lato',
                     pageTransitionsTheme: PageTransitionsTheme(builders: {

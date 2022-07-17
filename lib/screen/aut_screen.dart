@@ -16,50 +16,53 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final device = MediaQuery.of(context).size;
-    return Scaffold(
-      body: Stack(children: [
-        Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                const Color.fromRGBO(215, 117, 255, 1).withOpacity(0.5),
-                const Color.fromRGBO(255, 188, 117, 1).withOpacity(0.9),
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-              stops: const [0, 1],
+    return SafeArea(
+      child: Scaffold(
+        body: Stack(children: [
+          Container(
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: [
+                  const Color.fromARGB(255, 128, 128, 0).withOpacity(0.5),
+                  const Color.fromARGB(255, 128, 128, 0).withOpacity(0.9),
+                ],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                stops: const [0, 1],
+              ),
             ),
           ),
-        ),
-        SingleChildScrollView(
-          child: SizedBox(
-            height: device.height,
-            width: device.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Flexible(
-                  child: SizedBox(
-                    width: 150,
-                    height: 150,
-                    child: Image.asset(
-                      'assets/images/logo.png',
-                      fit: BoxFit.cover,
+          SingleChildScrollView(
+            child: SizedBox(
+              height: device.height,
+              width: device.width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    child: SizedBox(
+                      width: 250,
+                      height: 170,
+                      child: Image.asset(
+                        'assets/images/logo.png',
+                        fit: BoxFit.cover,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Flexible(
-                  child: const AuthCard(),
-                  flex: device.width > 600 ? 2 : 1,
-                )
-              ],
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Flexible(
+                    child: const AuthCard(),
+                    flex: device.width > 600 ? 2 : 1,
+                  )
+                ],
+              ),
             ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 }
