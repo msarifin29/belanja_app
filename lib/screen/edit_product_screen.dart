@@ -42,7 +42,8 @@ class _EditProductScreenState extends State<EditProductScreen> {
       if (ModalRoute.of(context)!.settings.arguments != null) {
         final productId = ModalRoute.of(context)!.settings.arguments as String;
         _editedProduct =
-            Provider.of<Products>(context, listen: false).findById(productId);
+            // Provider.of<Products>(context, listen: false).findById(productId);
+            context.read<Products>().findById(productId);
         _initialValue = {
           'title': _editedProduct.title!,
           'description': _editedProduct.description!,
@@ -89,12 +90,16 @@ class _EditProductScreenState extends State<EditProductScreen> {
       _isLoading = true;
     });
     if (_editedProduct.id != ' ') {
-      Provider.of<Products>(context, listen: false)
+      // Provider.of<Products>(context, listen: false)
+      //     .updateProduct(_editedProduct.id!, _editedProduct);
+      context
+          .read<Products>()
           .updateProduct(_editedProduct.id!, _editedProduct);
     } else {
       try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_editedProduct);
+        // await Provider.of<Products>(context, listen: false)
+        //     .addProduct(_editedProduct);
+        await context.read<Products>().addProduct(_editedProduct);
       } catch (error) {
         await showDialog(
           context: context,

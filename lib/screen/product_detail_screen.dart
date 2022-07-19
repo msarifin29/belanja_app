@@ -10,8 +10,9 @@ class ProductDetailScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final productId = ModalRoute.of(context)?.settings.arguments as String;
-    final loadedProduct =
-        Provider.of<Products>(context, listen: false).findById(productId);
+    // final loadedProduct =
+    //     Provider.of<Products>(context, listen: false).findById(productId);
+    final loadedProduct = context.read<Products>().findById(productId);
     return Scaffold(
         body: CustomScrollView(
       slivers: [

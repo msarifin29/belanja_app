@@ -20,7 +20,8 @@ class _OrderScreenState extends State<OrderScreen> {
 
   // ignore: unused_element
   Future _obtainOrdersFuture() async {
-    return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+    // return Provider.of<Orders>(context, listen: false).fetchAndSetOrders();
+    return context.read<Orders>().fetchAndSetOrders();
   }
 
   @override

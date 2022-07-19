@@ -30,7 +30,7 @@ class Auth with ChangeNotifier {
   }
 
 //api key from web
-  var apiKey = 'AIzaSyASwdp2KtFbBj1ROqAwiUTM7olci2N4j';
+  var apiKey = 'AIzaSyASwdp2KtFbBj1ROqAwiUTM7olci2N4jH4';
   Future<void> _authenticate(String email, String password, Uri url) async {
     try {
       final response = await http.post(url,

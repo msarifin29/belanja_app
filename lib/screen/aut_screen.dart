@@ -140,11 +140,17 @@ class _AuthCardState extends State<AuthCard>
     try {
       if (_authMode == AuthMode.Login) {
         // Log user in
-        await Provider.of<Auth>(context, listen: false)
+        // await Provider.of<Auth>(context, listen: false)
+        //     .login(_authData['email'], _authData['password']);
+        await context
+            .read<Auth>()
             .login(_authData['email'], _authData['password']);
       } else {
         // Sign user up
-        await Provider.of<Auth>(context, listen: false)
+        // await Provider.of<Auth>(context, listen: false)
+        //     .sigup(_authData['email'], _authData['password']);
+        await context
+            .read<Auth>()
             .sigup(_authData['email'], _authData['password']);
       }
     } on HttpException catch (error) {

@@ -12,9 +12,12 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final product = Provider.of<Product>(context, listen: false);
-    final authData = Provider.of<Auth>(context, listen: false);
-    final cart = Provider.of<Cart>(context, listen: false);
+    // final product = Provider.of<Product>(context, listen: false);
+    // final authData = Provider.of<Auth>(context, listen: false);
+    // final cart = Provider.of<Cart>(context, listen: false);
+    final product = context.read<Product>();
+    final authData = context.read<Auth>();
+    final cart = context.read<Cart>();
     return ClipRRect(
       borderRadius: BorderRadius.circular(10),
       child: GridTile(

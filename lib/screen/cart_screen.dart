@@ -11,7 +11,8 @@ class CartScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cart = Provider.of<Cart>(context);
+    // final cart = Provider.of<Cart>(context);
+    final cart = context.watch<Cart>();
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your Cart'),
@@ -82,7 +83,9 @@ class _OrderButtonState extends State<OrderButton> {
                 setState(() {
                   _isLoading = true;
                 });
-                await Provider.of<Orders>(context, listen: false).addOrder(
+                // await Provider.of<Orders>(context, listen: false).addOrder(
+                //     widget.cart.items.values.toList(), widget.cart.totalAmount);
+                await context.read<Orders>().addOrder(
                     widget.cart.items.values.toList(), widget.cart.totalAmount);
                 setState(() {
                   _isLoading = false;
